@@ -9,7 +9,7 @@ private:
 	int nextID = 1;		// 用于自动分配ID
 
 public:
-	void add(const std::string& title, int priority);
+	void add(const std::string& title, int priority, std::chrono::system_clock::time_point deadline);
 	void list() const;
 	void markDone(int id);
 	void remove(int id);

@@ -4,8 +4,8 @@
 #include <sstream>
 
 
-void TodoList::add(const std::string& title, int priority) {
-	tasks.emplace_back(nextID, title, priority);  // 直接在vector尾部构造
+void TodoList::add(const std::string& title, int priority, std::chrono::system_clock::time_point deadline) {
+	tasks.emplace_back(nextID, title, priority, deadline);  // 直接在vector尾部构造
 
 	nextID++;
 	std::cout << "successfully added task\n";
@@ -75,10 +75,15 @@ void TodoList::saveToFile(const std::string& filename) const {
 
 	for (const auto& t : tasks) {
 		// 用逗号分隔写入：ID，标题，优先级，是否完成
+
+		// 把time_point 转成 time_t（从1970年的秒数），存为整数
+		std::time_t t_time = std::chrono::system_clock::to_time_t(t.getDeadline());
+
 		fount << t.getID() << ","
 			<< t.getTitle() << ","
 			<< t.getPriority() << ","
-			<< t.isCompleted() << "\n";
+			<< (t.isCompleted() ? 1 : 0) << ","
+			<< t_time << "\n";
 	}
 
 	std::cout << "任务以及保存到" << filename << "\n";
@@ -107,6 +112,7 @@ void TodoList::loadFromFile(const std::string& filename) {
 		std::string title;
 		int priority = 1;
 		bool isCompleted = false;
+		std::chrono::system_clock::time_point deadline;
 
 		std::string token;
 		int round = 0;
@@ -125,13 +131,16 @@ void TodoList::loadFromFile(const std::string& filename) {
 			case 4:
 				isCompleted = stoi(token);
 				break;
-
+			case 5:
+				std::time_t t = std::stoll(token);	// 时间轴可能很大，用 stoll(long long)
+				deadline = std::chrono::system_clock::from_time_t(t);
+				break;
 			}
 
-		}
+        }
 
-		if (round == 4) {  // 确保读够了 4 个
-			Task t(id, title, priority);
+		if (round == 5) {  // 确保读够了 5 个
+			Task t(id, title, priority, deadline);
 			if (isCompleted) {
 				t.markDone();
 			}

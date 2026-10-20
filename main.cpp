@@ -8,6 +8,7 @@
 void printMenu();
 void init();
 int getSafeInt();
+std::chrono::system_clock::time_point parsedate(const std::string& dateStr);
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
@@ -39,14 +40,21 @@ void init() {
         if (choice == 1) {
             std::string titile;
             int priority;
+            std::chrono::system_clock::time_point deadline;
 
             std::cout << "请输入任务的名称：";
-            std::cin.ignore();  // 清除输入缓冲区的换行符.非常重要，因为输入1按回车后，回车还在缓冲区，如果不ignore，后面的getline会直接读到一个空字符串
+            // std::cin.ignore();  // 清除输入缓冲区的换行符.非常重要，因为输入1按回车后，回车还在缓冲区，如果不ignore，后面的getline会直接读到一个空字符串
             std::getline(std::cin, titile);
 
             std::cout << "请输入优先级（1高，2中，3低）：";
             priority = getSafeInt();
-            list.add(titile, priority);
+
+            std::cout << "请输入截日期（格式：YYYY-mm-dd）";
+            std::string tmp;
+            std::cin >> tmp;
+            deadline = parsedate(tmp);
+
+            list.add(titile, priority, deadline);
         }
         else if (choice == 2) {
             list.list();
@@ -90,4 +98,18 @@ int getSafeInt() {
             return input;
         }
     }
+}
+// 解析 “YYYY-MM-DD”字符串，返回time_pointer
+std::chrono::system_clock::time_point parsedate(const std::string& dateStr) {
+    std::tm tm = {};
+    std::istringstream ss(dateStr);
+    ss >> std::get_time(&tm, "%Y-%m-%d");       // 解析格式
+
+    if (ss.fail()) {
+        return std::chrono::system_clock::time_point(); // 解析失败，返回默认值
+
+    }
+    // mktime 将tm 转为 time_t,再转为 time_pointer
+    std::time_t t = std::mktime(&tm);
+    return std::chrono::system_clock::from_time_t(t);
 }
