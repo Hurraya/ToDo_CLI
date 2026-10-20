@@ -64,29 +64,58 @@ std::chrono::system_clock::time_point Task::getDeadline() const{
 }
 
 std::ostream& operator<<(std::ostream& os, const Task& task) {
-	os << "[" << task.getID() << "] ";
+	int days = task.getDaysRemaining();
+	// 先设置颜色
 	if (task.isCompleted()) {
-		os << "[√]";
+		os << "\033[90m"; // 灰色
 	}
 	else
 	{
+		if (days > -9999) {		// 将默认情况1970年隔离出去
+			if (days < 0 ) {
+				os << "\033[31m"; // 红色
+				
+			}
+			else if (days <= 3) {
+				os << "\33[33m"; // 黄色
+				
+			}
+			else {
+				os << "\033[32m";  // 绿色
+			}
+		}
+		else {
+			os << "\033[0m"; // 默认颜色
+		}
+	}
+	
+	// 打印任务主体
+	os << "[" << task.getID() << "] ";
+
+	if (task.isCompleted()) {
+		os << "[√]";
+	}
+	else {
 		os << "[ ]";
 	}
 
 	os << task.getTitle() << "(优先级：" << task.getPriority() << ")";
 
-	// 打印截至日期和剩余天数
-	int days = task.getDaysRemaining();
-
-	if (days > -9999) {		// 将默认情况1970年隔离出去
-		os << "| 截止: " << task.getDeadlineString();
-		if (days < 0 ) {
+	// 打印时间
+	if (days > -9999 && !task.isCompleted()) {
+		os << " | 截至： " << task.getDeadlineString();
+		if (days < 0) {
 			os << "（⚠ 已逾期" << -days << "天）";
 		}
 		else if (days <= 3) {
 			os << "（⚠ 仅剩 " << days << "天）";
 		}
 	}
+
+	// 重置颜色，不影响后面的输出
+	os << "\033[0m";
+	
+	
 
 	return os;
 }
