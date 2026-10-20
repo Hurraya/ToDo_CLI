@@ -23,8 +23,9 @@ void printMenu() {
     std::cout << "2.列出任务\n"; //list
     std::cout << "3.标记完成\n"; //markDone
     std::cout << "4.删除任务\n"; //remove
-    std::cout << "5.退出\n"; 
-    std::cout << "请输入指令(1-5)：";
+    std::cout << "5.搜索任务\n"; //search
+    std::cout << "6.退出\n";  
+    std::cout << "请输入指令(1-6)：";
 }
 
 void init() {
@@ -73,6 +74,16 @@ void init() {
             list.remove(id);
         }
         else if (choice == 5) {
+        
+            std::string keyword;
+            std::cout << "请输出要搜索的关键词：";
+            // std::cin >> keyword;
+
+            std::getline(std::cin, keyword);
+            list.search(keyword);
+        }
+
+        else if (choice == 6) {
             list.saveToFile("todo.txt"); // 退出时保存
             std::cout << "再见！\n";
             break;

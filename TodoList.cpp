@@ -2,6 +2,7 @@
 #include<algorithm>
 #include<fstream>
 #include <sstream>
+#include<cctype>
 
 
 void TodoList::add(const std::string& title, int priority, std::chrono::system_clock::time_point deadline) {
@@ -60,10 +61,6 @@ void TodoList::remove(int id) {
 	else {
 		std::cerr << "Task not Found\n";
 	}
-
-
-
-	
 }
 
 void TodoList::saveToFile(const std::string& filename) const {
@@ -155,4 +152,35 @@ void TodoList::loadFromFile(const std::string& filename) {
 
 
 	}
+}
+
+void TodoList::search(std::string& keyword)  const{
+	if (tasks.empty()) {
+		std::cout << "no task yet.\n";
+		return;
+	}
+
+	bool found = false;
+	std::cout << "\n--- 搜索结果: "<< keyword <<" ---\n";
+
+	for (const auto& t : tasks) {
+		if (constainsIgnoreCase(t.getTitle(), keyword)) {
+			std::cout << t << "\n";
+			found = true;
+		}
+	}
+
+	if (!found) {
+		std::cout << "没有找到包含 " << keyword << " 的任务。\n";
+	}
+}
+
+bool constainsIgnoreCase(const std::string& str, const std::string& keyword) {
+
+	auto it = std::search(
+		str.begin(), str.end(),
+		keyword.begin(), keyword.end(),
+		[](char ch1, char ch2) {return std::tolower(ch1) == std::tolower(ch2);});
+
+	return it != str.end();
 }

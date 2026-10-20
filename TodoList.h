@@ -17,4 +17,10 @@ public:
 	// 文件读写
 	void saveToFile(const std::string& filename) const;
 	void loadFromFile(const std::string& filename);
+
+	// 模糊搜索
+	void search(std::string& keywoard) const;
 };
+
+// 不区分大小写
+bool constainsIgnoreCase(const std::string& str, const std::string& keyword);
