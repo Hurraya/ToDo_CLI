@@ -3,5 +3,8 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/解决方案项/">
+    <File Path="screenshot.png" />
+  </Folder>
   <Project Path="ToDo_CLI.vcxproj" Id="58063ad1-e597-432a-ac6a-1d2643b508c3" />
 </Solution>
