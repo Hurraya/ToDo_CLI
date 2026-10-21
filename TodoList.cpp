@@ -55,7 +55,7 @@ void TodoList::remove(int id) {
 
 	if (it != tasks.end()) {
 		tasks.erase(it, tasks.end());  // it指向移到末尾要删除的那个元素
-		std::cout << "Task " << id << "remove.\n";
+		std::cout << "Task id" << id << " remove.\n";
 		
 	}
 	else {
@@ -183,4 +183,9 @@ bool constainsIgnoreCase(const std::string& str, const std::string& keyword) {
 		[](char ch1, char ch2) {return std::tolower(ch1) == std::tolower(ch2);});
 
 	return it != str.end();
+}
+
+
+int TodoList::getSize() const {
+	return tasks.size();
 }

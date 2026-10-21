@@ -20,6 +20,9 @@ public:
 
 	// 模糊搜索
 	void search(std::string& keywoard) const;
+
+	// 获取size
+	int getSize() const;
 };
 
 // 不区分大小写

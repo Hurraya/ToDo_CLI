@@ -6,7 +6,7 @@
 #include <functional>
 #include <map>
 #include "TodoList.h"
-
+#include "Test.h"
 
 void printMenu();
 void init();
@@ -20,6 +20,7 @@ void handleSearch(TodoList& list);
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
+    runAllTests();
     init(); 
 
     return 0;

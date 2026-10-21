@@ -143,10 +143,12 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Task.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="TodoList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Task.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="TodoList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -63,6 +63,7 @@ std::chrono::system_clock::time_point Task::getDeadline() const{
 	return deadline;
 }
 
+
 std::ostream& operator<<(std::ostream& os, const Task& task) {
 	int days = task.getDaysRemaining();
 	// 先设置颜色
